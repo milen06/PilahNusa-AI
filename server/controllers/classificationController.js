@@ -34,7 +34,7 @@ const CLASS_DATA_MAP = {
     category: 'B3',
     description: 'Baterai bekas yang mengandung bahan kimia berbahaya bagi lingkungan.',
     recyclingTips: ['Jangan dibuang sembarangan karena mengandung racun', 'Kumpulkan di tempat pengumpulan limbah B3 khusus'],
-    disposalGuide: 'Pisahkan dari sampah rumah tangga biasa. Bawa ke pusat pengumpulan limbah elektronik atau B3.',
+    disposalGuide: 'Pisahkan dari sampah rumah tangga biasa. Bawa ke pusat pengumpulan limbah B3.',
     decompositionTime: 'Tidak terurai secara alami (berbahaya)',
   },
   'Botol Plastik': {

@@ -33,16 +33,6 @@ export const CATEGORIES = {
     iconName: 'AlertTriangle',
     description: 'Bahan Berbahaya dan Beracun yang memerlukan penanganan khusus',
     examples: ['Baterai', 'Cat', 'Pestisida', 'Obat kadaluarsa', 'Lampu neon']
-  },
-  elektronik: {
-    key: 'elektronik',
-    label: 'Elektronik',
-    color: '#F59E0B',
-    bgColor: '#FFFBEB',
-    borderColor: '#FDE68A',
-    iconName: 'BatteryCharging',
-    description: 'Limbah elektronik atau e-waste yang mengandung bahan berharga',
-    examples: ['Ponsel rusak', 'Laptop', 'Charger', 'Kabel', 'Komponen elektronik']
   }
 };
 

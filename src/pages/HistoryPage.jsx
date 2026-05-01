@@ -11,7 +11,6 @@ const FILTER_OPTIONS = [
   { key: 'organik', label: 'Organik' },
   { key: 'anorganik', label: 'Anorganik' },
   { key: 'B3', label: 'B3' },
-  { key: 'elektronik', label: 'Elektronik' },
 ];
 
 const formatDate = (isoString) => {
