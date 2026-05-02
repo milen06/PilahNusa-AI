@@ -1,10 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Clock, BookOpen } from 'lucide-react';
+import { Home, Clock, BookOpen, Users } from 'lucide-react';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Beranda', icon: Home, exact: true },
   { path: '/history', label: 'Riwayat', icon: Clock },
+  { path: '/team', label: 'Tim Pengembang', icon: Users },
   { path: '/guide', label: 'Panduan', icon: BookOpen },
 ];
 

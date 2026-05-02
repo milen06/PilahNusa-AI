@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, ImagePlus, Layers, Recycle, Leaf, Zap, CheckCircle, BatteryCharging, AlertTriangle } from 'lucide-react';
+import { Camera, ImagePlus, Layers, Recycle, Leaf, Zap, CheckCircle, BatteryCharging, AlertTriangle, Trash2 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import StatCard from '../components/ui/StatCard';
 import { CATEGORY_LIST } from '../data/wasteCategories';
@@ -33,9 +33,11 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__content">
-          <div className="hero__badge" aria-hidden="true">
-            <Leaf size={14} />
-            <span>Eco-Friendly AI Solution</span>
+          {/* Brand Icon (Gambar 2 Style) */}
+          <div className="hero__brand-icon animate-bounce-subtle" aria-hidden="true">
+            <div className="brand-icon-box">
+              <Trash2 size={36} color="white" />
+            </div>
           </div>
 
           <h1 className="hero__title" id="hero-title">
@@ -43,50 +45,49 @@ const HomePage = () => {
           </h1>
 
           <p className="hero__subtitle">
-            Scan sampahmu dan pelajari cara pengelolaannya dengan teknologi AI yang canggih dan mudah digunakan
+            Scan sampahmu dan pelajari cara pengelolaannya
           </p>
+
+          {/* Hero Visual Container (Mobile prioritized) */}
+          <div className="hero__visual-mobile" aria-hidden="true">
+            <div className="visual-circle-outer">
+              <div className="visual-circle-inner">
+                <Layers size={64} color="var(--color-primary)" strokeWidth={1.5} />
+              </div>
+            </div>
+          </div>
 
           {/* CTA Buttons */}
           <div className="hero__cta" role="group" aria-label="Tindakan utama">
             <Button
               variant="primary"
               size="lg"
-              icon={<Camera size={18} />}
+              icon={<Camera size={20} />}
               onClick={() => navigate('/scan')}
               id="btn-scan-sekarang"
               aria-label="Mulai scan sampah sekarang"
+              fullWidth
             >
               Scan Sekarang
             </Button>
             <Button
               variant="outline"
               size="lg"
-              icon={<ImagePlus size={18} />}
+              icon={<ImagePlus size={20} />}
               onClick={() => navigate('/scan')}
               id="btn-upload-galeri"
               aria-label="Upload foto dari galeri"
+              fullWidth
             >
               Upload dari Galeri
             </Button>
           </div>
-
-          {/* Feature pills */}
-          <div className="hero__features" role="list" aria-label="Fitur unggulan">
-            {features.map(({ icon, label }) => (
-              <div key={label} className="hero__feature" role="listitem">
-                <span className="hero__feature-icon" aria-hidden="true">{icon}</span>
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Hero Visual Card (Matching Gambar 2) */}
-        <div className="hero__visual" aria-hidden="true">
+        {/* Desktop Hero Visual Card (Hidden on mobile) */}
+        <div className="hero__visual-desktop" aria-hidden="true">
           <div className="hero-card">
-            {/* Main Visual Container */}
             <div className="hero-card__visual-container">
-              {/* Floating decorations around the circle */}
               <div className="hero-card__float hero-card__float--tl animate-float">
                 <Recycle size={18} color="var(--color-primary)" />
               </div>
@@ -97,7 +98,6 @@ const HomePage = () => {
                 <Leaf size={14} color="var(--color-primary)" />
               </div>
 
-              {/* Large Green Circle with Layers Icon */}
               <div className="hero-card__circle-wrapper">
                 <div className="hero-card__circle">
                   <Layers size={64} color="white" strokeWidth={1.5} />
@@ -105,17 +105,16 @@ const HomePage = () => {
               </div>
             </div>
 
-            {/* Stats row below circle */}
-            <div className="hero-card__stats-grid" role="list" aria-label="Statistik aplikasi">
-              <div className="hero-card__stat-item" role="listitem">
+            <div className="hero-card__stats-grid">
+              <div className="hero-card__stat-item">
                 <strong className="hero-card__stat-value">95%</strong>
                 <span className="hero-card__stat-label">Akurasi</span>
               </div>
-              <div className="hero-card__stat-item" role="listitem">
+              <div className="hero-card__stat-item">
                 <strong className="hero-card__stat-value">10+</strong>
                 <span className="hero-card__stat-label">Kategori</span>
               </div>
-              <div className="hero-card__stat-item" role="listitem">
+              <div className="hero-card__stat-item">
                 <strong className="hero-card__stat-value">Fast</strong>
                 <span className="hero-card__stat-label">Proses</span>
               </div>
@@ -124,8 +123,8 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Category Preview Section */}
-      <section className="home-categories" aria-labelledby="categories-heading">
+      {/* Category Preview Section - Hidden on mobile for clean landing style */}
+      <section className="home-categories desktop-only" aria-labelledby="categories-heading">
         <h2 className="home-categories__title" id="categories-heading">
           Kategori Sampah
         </h2>
@@ -154,102 +153,128 @@ const HomePage = () => {
 
       <style>{`
         .home-page {
-          padding: 28px 28px 28px;
+          padding: 28px 20px 40px;
           display: flex;
           flex-direction: column;
-          gap: 36px;
+          gap: 40px;
           min-height: 100vh;
+          background-color: var(--color-white);
         }
 
         /* ---- Hero ---- */
         .hero {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 40px;
+          grid-template-columns: 1fr 1.2fr;
+          gap: 60px;
           align-items: center;
-          min-height: 480px;
+          padding: 40px 0;
         }
 
         .hero__content {
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: 24px;
         }
 
-        .hero__badge {
-          display: inline-flex;
+        .hero__brand-icon {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 8px;
+        }
+
+        .brand-icon-box {
+          width: 80px;
+          height: 80px;
+          background: var(--color-primary);
+          border-radius: 24px;
+          display: flex;
           align-items: center;
-          gap: 6px;
-          padding: 6px 14px;
-          background: var(--color-primary-bg);
-          color: var(--color-primary-dark);
-          border: 1.5px solid var(--color-primary-bg-md);
-          border-radius: var(--radius-full);
-          font-size: 0.8125rem;
-          font-weight: 600;
-          width: fit-content;
+          justify-content: center;
+          box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
         }
 
         .hero__title {
-          font-size: clamp(2rem, 4vw, 3rem);
+          font-size: clamp(2.25rem, 5vw, 3.5rem);
           font-weight: 800;
           line-height: 1.1;
           color: var(--color-text-primary);
           margin: 0;
+          text-align: center;
         }
 
         .hero__subtitle {
-          font-size: 1rem;
+          font-size: 1.125rem;
           color: var(--color-text-secondary);
-          line-height: 1.65;
+          line-height: 1.6;
           margin: 0;
-          max-width: 420px;
+          text-align: center;
+          max-width: 320px;
+          align-self: center;
+        }
+
+        /* Mobile Visual Circle */
+        .hero__visual-mobile {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 32px 0;
+        }
+
+        .visual-circle-outer {
+          width: 200px;
+          height: 200px;
+          background: rgba(34, 197, 94, 0.1);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(34, 197, 94, 0.1);
+        }
+
+        .visual-circle-inner {
+          width: 150px;
+          height: 150px;
+          background: var(--color-white);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.05);
         }
 
         .hero__cta {
           display: flex;
+          flex-direction: column;
           gap: 12px;
-          flex-wrap: wrap;
+          width: 100%;
+          max-width: 400px;
+          align-self: center;
+          margin-bottom: 20px;
         }
 
-        .hero__features {
-          display: flex;
-          gap: 16px;
-          flex-wrap: wrap;
+        .hero__visual-desktop {
+          display: block;
         }
 
-        .hero__feature {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 0.8125rem;
-          font-weight: 500;
-          color: var(--color-text-secondary);
-        }
-
-        .hero__feature-icon {
-          display: flex;
-          align-items: center;
-          color: var(--color-primary);
-        }        /* ---- Hero Card (Gambar 2 style) ---- */
+        /* ---- Hero Card (Desktop) ---- */
         .hero-card {
           background: var(--color-white);
           border-radius: var(--radius-2xl);
-          padding: 24px;
+          padding: 32px;
           box-shadow: var(--shadow-lg);
           border: 1px solid var(--color-border-light);
           position: relative;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 20px;
+          gap: 24px;
           width: 100%;
         }
 
         .hero-card__visual-container {
           position: relative;
           width: 100%;
-          height: 240px;
+          height: 280px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -257,8 +282,8 @@ const HomePage = () => {
 
         .hero-card__float {
           position: absolute;
-          width: 44px;
-          height: 44px;
+          width: 48px;
+          height: 48px;
           background: white;
           border-radius: var(--radius-lg);
           display: flex;
@@ -273,8 +298,8 @@ const HomePage = () => {
         .hero-card__float--br { bottom: 20%; right: 15%; }
 
         .hero-card__circle-wrapper {
-          width: 200px;
-          height: 200px;
+          width: 220px;
+          height: 220px;
           background: radial-gradient(circle, rgba(34,197,94,0.1) 0%, transparent 70%);
           display: flex;
           align-items: center;
@@ -283,9 +308,9 @@ const HomePage = () => {
         }
 
         .hero-card__circle {
-          width: 160px;
-          height: 160px;
-          background: #22C55E;
+          width: 170px;
+          height: 170px;
+          background: var(--color-primary);
           border-radius: 50%;
           display: flex;
           align-items: center;
@@ -297,14 +322,14 @@ const HomePage = () => {
         .hero-card__stats-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 12px;
+          gap: 16px;
           width: 100%;
         }
 
         .hero-card__stat-item {
           background: var(--color-bg-secondary);
           border-radius: var(--radius-lg);
-          padding: 12px 8px;
+          padding: 16px 12px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -313,106 +338,99 @@ const HomePage = () => {
         }
 
         .hero-card__stat-value {
-          font-size: 1.125rem;
+          font-size: 1.25rem;
           font-weight: 800;
-          color: #22C55E;
-          font-family: var(--font-heading);
+          color: var(--color-primary);
         }
 
         .hero-card__stat-label {
-          font-size: 0.75rem;
+          font-size: 0.8125rem;
           color: var(--color-text-secondary);
           font-weight: 500;
-        } }
+        }
 
         /* ---- Category Section ---- */
         .home-categories {
-          padding: 4px 0;
+          padding-top: 20px;
         }
 
         .home-categories__title {
-          font-size: 1.25rem;
-          font-weight: 700;
-          margin-bottom: 6px;
+          font-size: 1.5rem;
+          font-weight: 800;
+          margin-bottom: 8px;
         }
 
         .home-categories__subtitle {
-          font-size: 0.9rem;
-          color: var(--color-text-secondary);
-          margin-bottom: 20px;
+          font-size: 1rem;
+          margin-bottom: 24px;
         }
 
         .home-categories__grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 12px;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 16px;
         }
 
         .category-chip {
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 16px;
-          border-radius: var(--radius-lg);
+          gap: 16px;
+          padding: 20px;
+          border-radius: var(--radius-xl);
           border: 1.5px solid;
-          transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-          cursor: default;
+          transition: transform var(--transition-normal);
         }
 
-        .category-chip:hover {
-          transform: translateY(-2px);
-          box-shadow: var(--shadow-md);
+        /* ---- Animations ---- */
+        @keyframes scanPulse {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.05); opacity: 0.9; }
         }
 
-        .category-chip__icon {
-          font-size: 1.5rem;
-          flex-shrink: 0;
+        .animate-bounce-subtle {
+          animation: bounceSubtle 3s infinite ease-in-out;
         }
 
-        .category-chip__label {
-          display: block;
-          font-size: 0.875rem;
-          font-weight: 700;
-          font-family: var(--font-heading);
-          margin-bottom: 2px;
-        }
-
-        .category-chip__desc {
-          font-size: 0.75rem;
-          color: var(--color-text-secondary);
-          margin: 0;
-          line-height: 1.4;
+        @keyframes bounceSubtle {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-8px); }
         }
 
         /* ---- Responsive ---- */
-        @media (max-width: 1023px) {
-          .hero {
-            grid-template-columns: 1fr;
-            gap: 28px;
-            min-height: auto;
+        @media (min-width: 1024px) {
+          .hero__brand-icon, .hero__visual-mobile {
+            display: none;
           }
-
-          .hero__visual {
-            order: -1;
+          .hero__title, .hero__subtitle {
+            text-align: left;
+            align-self: flex-start;
           }
-
-          .hero-card {
-            width: 100%;
-            margin: 0 auto;
+          .hero__subtitle {
+            max-width: 480px;
+          }
+          .hero__cta {
+            flex-direction: row;
+            align-self: flex-start;
+            max-width: none;
+          }
+          .hero__cta .btn {
+            width: auto;
           }
         }
 
-        @media (max-width: 767px) {
-          .home-page {
-            padding: 20px 16px;
+        @media (max-width: 1023px) {
+          .hero {
+            grid-template-columns: 1fr;
+            gap: 0;
+            padding: 20px 0;
           }
 
-          .hero__cta {
-            flex-direction: column;
+          .hero__visual-desktop, .desktop-only {
+            display: none;
           }
 
-          .hero__cta .btn {
-            width: 100%;
+          .home-categories__grid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
