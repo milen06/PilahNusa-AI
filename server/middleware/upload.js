@@ -5,12 +5,11 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const UPLOAD_DIR = path.join(__dirname, '../uploads');
+import os from 'os';
 
-// Ensure upload directory exists
-if (!fs.existsSync(UPLOAD_DIR)) {
-  fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-}
+const UPLOAD_DIR = os.tmpdir();
+
+// No need to manually ensure /tmp exists, but let's keep the variable for consistency
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
