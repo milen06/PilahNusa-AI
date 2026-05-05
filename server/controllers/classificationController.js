@@ -158,13 +158,17 @@ export const classifyWaste = async (req, res, next) => {
       return res.status(400).json({ error: 'No image file provided for classification' });
     }
 
-    // Create base64 thumbnail from the uploaded image before processing
+    // Create small thumbnail from the uploaded image for storage efficiency
     let thumbnailBase64 = null;
     try {
-      const fileData = fs.readFileSync(imagePath);
-      thumbnailBase64 = 'data:image/jpeg;base64,' + fileData.toString('base64');
+      const thumbnailBuffer = await sharp(imagePath)
+        .resize(200, 200, { fit: 'inside' })
+        .jpeg({ quality: 70 })
+        .toBuffer();
+      thumbnailBase64 = 'data:image/jpeg;base64,' + thumbnailBuffer.toString('base64');
     } catch (err) {
       console.error('[Thumbnail] Failed to create thumbnail:', err);
+      // Fallback: we could still proceed without thumbnail or try a simpler way
     }
 
     // Load model and preprocess image
