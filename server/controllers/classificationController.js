@@ -18,14 +18,11 @@ const CLASS_LABELS = {
   0: 'Batrai',
   1: 'Botol Plastik',
   2: 'Kaca',
-  3: 'Kardus',
-  4: 'Kertas',
-  5: 'Makanan Sisa',
-  6: 'Metal',
-  7: 'Plastik hitam',
-  8: 'Sisa Sayuran',
-  9: 'Sisa buah',
-  10: 'Vegetation'
+  3: 'Kardus dan Kertas',
+  4: 'Metal',
+  5: 'Sisa buah dan sayur',
+  6: 'Trash Bag',
+  7: 'food_organics'
 };
 
 // Rich data mapping — single source of truth for all 11 waste classes
@@ -75,7 +72,7 @@ const CLASS_DATA_MAP = {
     decompositionTime: '1 juta tahun',
     economicValue: 'Rendah',
   },
-  'Kardus': {
+  'Kardus dan Kertas': {
     category: 'anorganik',
     description: 'Limbah kertas tebal berupa kardus kemasan yang mudah didaur ulang dan memiliki nilai ekonomi cukup baik.',
     recyclingTips: [
@@ -135,7 +132,14 @@ const CLASS_DATA_MAP = {
     decompositionTime: '50-200 tahun',
     economicValue: 'Tinggi',
   },
-  'Plastik hitam': {
+  'Sisa buah dan sayur': {
+    category: 'organik',
+    description: 'Potongan sisa buah-buahan dan sayuran dapur.',
+    recyclingTips: ['Sangat baik untuk bahan kompos', 'Bisa diolah menjadi Eco-Enzyme'],
+    disposalGuide: 'Masukkan ke komposter atau tempat sampah organik (hijau).',
+    decompositionTime: '1-4 minggu',
+  },
+  'Trash Bag': {
     category: 'anorganik',
     description: 'Kantong plastik kresek berwarna hitam (HDPE/LDPE) yang sulit didaur ulang secara konvensional karena pewarnaan karbonnya.',
     recyclingTips: [
@@ -150,7 +154,7 @@ const CLASS_DATA_MAP = {
     decompositionTime: '10-20 tahun',
     economicValue: 'Rendah',
   },
-  'Sisa Sayuran': {
+  'food_organics': {
     category: 'organik',
     description: 'Potongan sisa sayur dari dapur seperti kulit, batang, dan daun yang tidak digunakan, kaya nutrisi untuk kompos.',
     recyclingTips: [
