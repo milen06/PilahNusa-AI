@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Camera, Clock, BookOpen, Trash2, Leaf, Users } from 'lucide-react';
+import { Home, Camera, Clock, BookOpen, Trash2, Leaf, Users, BotMessageSquare } from 'lucide-react';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Beranda', icon: Home, exact: true },
   { path: '/scan', label: 'Scan', icon: Camera },
   { path: '/history', label: 'Riwayat', icon: Clock },
+  { path: '/chatbot', label: 'Chatbot', icon: BotMessageSquare },
   { path: '/team', label: 'Tim Pengembang', icon: Users },
   { path: '/guide', label: 'Cara Menggunakan', icon: BookOpen },
 ];

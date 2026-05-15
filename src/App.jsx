@@ -8,6 +8,7 @@ import ResultPage from './pages/ResultPage';
 import HistoryPage from './pages/HistoryPage';
 import GuidePage from './pages/GuidePage';
 import TeamPage from './pages/TeamPage';
+import ChatbotPage from './pages/ChatbotPage';
 import ErrorBoundary from './components/ErrorBoundary';
 
 let toastIdCounter = 0;
@@ -41,6 +42,7 @@ function App() {
             <Route path="/scan" element={<ScanPage />} />
             <Route path="/result/:id" element={<ResultPage />} />
             <Route path="/history" element={<HistoryPage />} />
+            <Route path="/chatbot" element={<ChatbotPage />} />
             <Route path="/guide" element={<GuidePage />} />
             <Route path="/team" element={<TeamPage />} />
           </Routes>
