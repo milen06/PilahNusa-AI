@@ -9,7 +9,7 @@ import BottomNav from './BottomNav';
  */
 const Layout = ({ children }) => {
   const location = useLocation();
-  const isTeamPage = location.pathname === '/team';
+  const isHomePage = location.pathname === '/';
 
   return (
     <div className="layout">
@@ -22,7 +22,7 @@ const Layout = ({ children }) => {
       </main>
 
       {/* Mobile Floating Team Button */}
-      {!isTeamPage && (
+      {isHomePage && (
         <Link
           to="/team"
           className="mobile-team-btn animate-fade-in"
