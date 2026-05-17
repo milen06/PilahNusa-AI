@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Camera, Clock, BookOpen, Trash2, Leaf, Users, BotMessageSquare } from 'lucide-react';
+import { Home, Camera, Clock, BookOpen, Leaf, Users, BotMessageSquare } from 'lucide-react';
 
 const NAV_ITEMS = [
   { path: '/', label: 'Beranda', icon: Home, exact: true },
@@ -19,9 +19,11 @@ const Sidebar = () => {
     <aside className="sidebar" aria-label="Navigasi utama">
       {/* Logo */}
       <div className="sidebar__logo">
-        <div className="sidebar__logo-icon" aria-hidden="true">
-          <Trash2 size={20} color="white" />
-        </div>
+        <img
+          src="/images/logo.png"
+          alt="PilahNusa AI Logo"
+          className="sidebar__logo-img"
+        />
         <div className="sidebar__logo-text">
           <span className="sidebar__app-name">PilahNusa AI</span>
           <span className="sidebar__app-subtitle">Waste Classifier</span>
@@ -91,15 +93,11 @@ const Sidebar = () => {
           margin-bottom: 8px;
         }
 
-        .sidebar__logo-icon {
+        .sidebar__logo-img {
           width: 38px;
           height: 38px;
-          background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+          object-fit: contain;
           border-radius: var(--radius-md);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
           flex-shrink: 0;
         }
 
