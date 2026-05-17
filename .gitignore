@@ -251,3 +251,17 @@ server/data/pilahnusa_model_final.tflite
 # Uploaded Files
 server/uploads/*
 !server/uploads/.gitkeep
+
+# IDE Settings
+.vscode/
+
+# Internal Documents & AI Notes
+docs/
+ai_readme.md
+IMPLEMENTATION_PLAN.md
+IMPELEMTATION_PLAN.md
+NEWUUPDATE.md
+NEWUPDATE.md
+collaboration_tutorial.md
+NEW_UPDATE_IMPLEMENTATION_PLAN.md
+
