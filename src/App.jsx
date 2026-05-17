@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
-import { ToastContainer } from './components/ui/Toast';
+import { ToastProvider } from './components/ui/Toast';
 import HomePage from './pages/HomePage';
 import ScanPage from './pages/ScanPage';
 import ResultPage from './pages/ResultPage';
@@ -10,46 +10,37 @@ import GuidePage from './pages/GuidePage';
 import TeamPage from './pages/TeamPage';
 import ChatbotPage from './pages/ChatbotPage';
 import ErrorBoundary from './components/ErrorBoundary';
-
-let toastIdCounter = 0;
+import { getOrCreateUserId } from './utils/userUtils';
 
 /**
  * Root application component with routing and toast context
  */
 function App() {
-  const [toasts, setToasts] = useState([]);
-
-  const addToast = useCallback((message, type = 'info', duration = 4000) => {
-    const id = ++toastIdCounter;
-    setToasts((prev) => [...prev, { id, message, type, duration }]);
-  }, []);
-
-  const removeToast = useCallback((id) => {
-    setToasts((prev) => prev.filter((t) => t.id !== id));
+  // Initialize unique user ID on first access
+  useEffect(() => {
+    getOrCreateUserId();
   }, []);
 
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        {/* Skip to main content — accessibility */}
-        <a href="#main-content" className="skip-link">
-          Lewati ke konten utama
-        </a>
+      <ToastProvider>
+        <BrowserRouter>
+          {/* Skip to main content — accessibility */}
+          <a href="#main-content" className="skip-link">
+            Lewati ke konten utama
+          </a>
 
-        <Layout>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/scan" element={<ScanPage />} />
-            <Route path="/result/:id" element={<ResultPage />} />
-            <Route path="/history" element={<HistoryPage />} />
-            <Route path="/chatbot" element={<ChatbotPage />} />
-            <Route path="/guide" element={<GuidePage />} />
-            <Route path="/team" element={<TeamPage />} />
-          </Routes>
-        </Layout>
-
-        {/* Global Toast Notifications */}
-        <ToastContainer toasts={toasts} onRemove={removeToast} />
+          <Layout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/scan" element={<ScanPage />} />
+              <Route path="/result/:id" element={<ResultPage />} />
+              <Route path="/history" element={<HistoryPage />} />
+              <Route path="/chatbot" element={<ChatbotPage />} />
+              <Route path="/guide" element={<GuidePage />} />
+              <Route path="/team" element={<TeamPage />} />
+            </Routes>
+          </Layout>
 
         <style>{`
           .skip-link {
@@ -72,7 +63,8 @@ function App() {
             top: 0;
           }
         `}</style>
-      </BrowserRouter>
+        </BrowserRouter>
+      </ToastProvider>
     </ErrorBoundary>
   );
 }

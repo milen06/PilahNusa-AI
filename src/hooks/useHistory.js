@@ -1,18 +1,63 @@
 import { useState, useCallback, useEffect } from 'react';
 import { getHistory, saveHistoryItem, deleteHistoryItem, clearHistory } from '../utils/storageUtils';
+import { getOrCreateUserId } from '../utils/userUtils';
+import { 
+  fetchHistoryFromSupabase, 
+  saveScanToSupabase, 
+  submitUserFeedbackToSupabase,
+  checkFeedbackStatusFromSupabase
+} from '../services/supabaseClient';
+
+const FEEDBACK_SUBMITTED_KEY = 'pilahnusa_feedback_submitted';
 
 /**
- * Custom hook for managing scan history via localStorage
+ * Custom hook for managing scan history and general user feedback via localStorage & Supabase
  */
 const useHistory = () => {
   const [history, setHistory] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
 
-  // Load history on mount
+  // Load history & feedback status on mount (syncs LocalStorage and Supabase)
   useEffect(() => {
-    const localHistory = getHistory();
-    setHistory(localHistory);
-    setIsLoaded(true);
+    const loadHistoryAndFeedback = async () => {
+      // 1. Fast load from localStorage for instant UX
+      const localHistory = getHistory();
+      setHistory(localHistory);
+      
+      const localFeedbackStatus = localStorage.getItem(FEEDBACK_SUBMITTED_KEY) === 'true';
+      setFeedbackSubmitted(localFeedbackStatus);
+      setIsLoaded(true);
+
+      const userId = getOrCreateUserId();
+      if (userId) {
+        // 2. Sync history from Supabase in the background
+        const historyRes = await fetchHistoryFromSupabase(userId);
+        if (historyRes.success && historyRes.data) {
+          setHistory(historyRes.data);
+          try {
+            localStorage.setItem('pilahnusa_history', JSON.stringify(historyRes.data));
+          } catch (e) {
+            console.error('Failed to sync Supabase history to localStorage:', e);
+          }
+        }
+
+        // 3. Sync feedback status in the background if not submitted locally
+        if (!localFeedbackStatus) {
+          const feedbackRes = await checkFeedbackStatusFromSupabase(userId);
+          if (feedbackRes.success && feedbackRes.submitted) {
+            setFeedbackSubmitted(true);
+            try {
+              localStorage.setItem(FEEDBACK_SUBMITTED_KEY, 'true');
+            } catch (e) {
+              console.error('Failed to save feedback status to localStorage:', e);
+            }
+          }
+        }
+      }
+    };
+
+    loadHistoryAndFeedback();
   }, []);
 
   /**
@@ -20,9 +65,53 @@ const useHistory = () => {
    * @param {Object} item - History item to add
    */
   const addToHistory = useCallback((item) => {
+    // Save to local storage
     const updatedHistory = saveHistoryItem(item);
     setHistory(updatedHistory);
+
+    // Sync to Supabase in the background (does not block UI)
+    const userId = getOrCreateUserId();
+    if (userId) {
+      saveScanToSupabase(item, userId).catch((err) => {
+        console.error('Failed to sync new scan to Supabase:', err);
+      });
+    }
     return item;
+  }, []);
+
+  /**
+   * Submit one-time user feedback (rating & message)
+   * @param {number} rating - Rating score (1-5)
+   * @param {string} feedbackMessage - Review text
+   * @returns {Promise<{success: boolean, error: any}>}
+   */
+  const submitUserFeedback = useCallback(async (rating, feedbackMessage) => {
+    const userId = getOrCreateUserId();
+    if (!userId) {
+      return { success: false, error: 'User ID not initialized' };
+    }
+
+    // 1. Optimistically update local state & cache
+    setFeedbackSubmitted(true);
+    try {
+      localStorage.setItem(FEEDBACK_SUBMITTED_KEY, 'true');
+    } catch (e) {
+      console.error('Failed to save feedback status in localStorage:', e);
+    }
+
+    // 2. Send request to Supabase
+    let success = false;
+    let error = null;
+    try {
+      const res = await submitUserFeedbackToSupabase(userId, rating, feedbackMessage);
+      success = res.success;
+      error = res.error;
+    } catch (err) {
+      console.error('Supabase feedback submit failed:', err);
+      error = err;
+    }
+
+    return { success, error };
   }, []);
 
   /**
@@ -79,7 +168,9 @@ const useHistory = () => {
     isLoaded,
     totalScans,
     categoryCounts,
+    feedbackSubmitted,
     addToHistory,
+    submitUserFeedback,
     removeFromHistory,
     clearAllHistory,
     filterByCategory,
@@ -88,4 +179,3 @@ const useHistory = () => {
 };
 
 export default useHistory;
-

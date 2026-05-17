@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext, useContext, useCallback } from 'react';
 import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react';
 
 const ICONS = {
@@ -13,6 +13,47 @@ const COLORS = {
   error: { bg: '#FEF2F2', border: '#FECACA', text: '#DC2626', icon: '#EF4444' },
   warning: { bg: '#FFFBEB', border: '#FDE68A', text: '#D97706', icon: '#F59E0B' },
   info: { bg: '#EFF6FF', border: '#BFDBFE', text: '#1D4ED8', icon: '#3B82F6' },
+};
+
+// Global counter for toast IDs
+let toastIdCounter = 0;
+
+// Create Toast Context
+const ToastContext = createContext(null);
+
+/**
+ * Toast Provider to wrap the root application
+ */
+export const ToastProvider = ({ children }) => {
+  const [toasts, setToasts] = useState([]);
+
+  const addToast = useCallback((message, type = 'info', duration = 4000) => {
+    const id = ++toastIdCounter;
+    setToasts((prev) => [...prev, { id, message, type, duration }]);
+    return id;
+  }, []);
+
+  const removeToast = useCallback((id) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  }, []);
+
+  return (
+    <ToastContext.Provider value={{ addToast }}>
+      {children}
+      <ToastContainer toasts={toasts} onRemove={removeToast} />
+    </ToastContext.Provider>
+  );
+};
+
+/**
+ * Custom hook to use toast notifications from any component
+ */
+export const useToast = () => {
+  const context = useContext(ToastContext);
+  if (!context) {
+    throw new Error('useToast must be used within a ToastProvider');
+  }
+  return context;
 };
 
 /**

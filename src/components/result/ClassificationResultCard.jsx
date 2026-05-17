@@ -4,6 +4,7 @@ import ConfidenceBar from './ConfidenceBar';
 import WasteStats from './WasteStats';
 import DisposalInfo from './DisposalInfo';
 import RecyclingTips from './RecyclingTips';
+import YoutubeTutorials from './YoutubeTutorials';
 
 /**
  * ClassificationResultCard — main container assembling all result sub-components.
@@ -60,6 +61,9 @@ const ClassificationResultCard = ({ result, imageUrl }) => {
 
       {/* ── Recycling tips ── */}
       <RecyclingTips tips={result.recyclingTips} />
+
+      {/* ── YouTube tutorials ── */}
+      <YoutubeTutorials tutorials={result.youtubeTutorials} />
 
       <style>{`
         .crc {

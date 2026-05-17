@@ -1,48 +1,53 @@
-import React from 'react';
 import { Users, Github, Linkedin, ClipboardList, Palette, Monitor, Bot, FlaskConical, Rocket } from 'lucide-react';
 
 const TEAM_MEMBERS = [
   {
     name: 'Irdan Guntara',
     role: 'Project Manager & AI Engineer',
+    image: '/images/teams/irdan.jpg',
     desc: 'Memimpin koordinasi tim serta mengintegrasikan model machine learning untuk klasifikasi sampah.',
-    github: '#',
-    linkedin: '#',
+    github: 'https://github.com/IrdanGu',
+    linkedin: 'https://www.linkedin.com/in/irdan-guntara-13a425279?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
   {
     name: 'Ema Maleni',
     role: 'Frontend Developer',
-    desc: 'Mengembangkan interface aplikasi dengan React untuk tampilan yang responsif dan user-friendly.',
-    github: '#',
-    linkedin: '#',
+    image: '/images/teams/ema.jpeg',
+    desc: 'Mengembangkan interface aplikasi dengan React untuk tampilan yang responsif and user-friendly.',
+    github: 'https://github.com/milen06',
+    linkedin: 'https://www.linkedin.com/in/ema-maleni-7a12113a6?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
   {
     name: 'Nayarah Atmawardani',
     role: 'Backend Developer',
+    image: '/images/teams/naya.jpg',
     desc: 'Membangun API dan sistem backend yang robust untuk manajemen data dan fitur aplikasi.',
-    github: '#',
-    linkedin: '#',
+    github: 'https://github.com/NayarahAtmawardani',
+    linkedin: 'https://www.linkedin.com/in/nayarah-atmawardani-0723053b0?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
   {
     name: 'Galih Rizaldy',
     role: 'AI Engineer',
+    image: '/images/teams/galih.jpg',
     desc: 'Mengembangkan dan mengoptimalkan model kecerdasan buatan untuk akurasi klasifikasi terbaik.',
-    github: '#',
-    linkedin: '#',
+    github: 'https://github.com/GalihRizaldy',
+    linkedin: 'https://www.linkedin.com/in/galih-rizaldy?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
   {
     name: 'Gisca Oktavia Ramadhani',
     role: 'Data Scientist',
+    image: '/images/teams/gisca.png',
     desc: 'Menganalisis data sampah dan melakukan pemrosesan data untuk melatih model AI.',
-    github: '#',
-    linkedin: '#',
+    github: 'https://github.com/oktaviaramadhanigisca-web',
+    linkedin: 'https://www.linkedin.com/in/gisca-oktavia-ramadhani-158006399?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
   {
     name: 'Ryan Dwi Antoni',
     role: 'Data Scientist',
+    image: '/images/teams/ryan.jpg',
     desc: 'Mengolah dataset dan melakukan validasi data untuk memastikan kualitas performa model.',
-    github: '#',
-    linkedin: '#',
+    github: 'https://github.com/ryanndwii',
+    linkedin: 'https://www.linkedin.com/in/ryandwii?utm_source=share_via&utm_content=profile&utm_medium=member_ios',
   },
 ];
 
@@ -74,10 +79,17 @@ const TeamPage = () => {
         {TEAM_MEMBERS.map((member) => (
           <div key={member.name} className="team-card">
             <div className="team-card__image-container">
-              {/* Empty Photo Slot as requested */}
-              <div className="team-card__image-placeholder">
-                <Users size={48} color="var(--color-border)" />
-              </div>
+              {member.image ? (
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="team-card__image"
+                />
+              ) : (
+                <div className="team-card__image-placeholder">
+                  <Users size={48} color="var(--color-border)" />
+                </div>
+              )}
               <div className="team-card__role-badge">
                 {member.role}
               </div>
@@ -86,10 +98,22 @@ const TeamPage = () => {
               <h3 className="team-card__name">{member.name}</h3>
               <p className="team-card__desc">{member.desc}</p>
               <div className="team-card__socials">
-                <a href={member.github} className="team-card__social-link" aria-label="Github Profile">
+                <a
+                  href={member.github}
+                  className="team-card__social-link"
+                  aria-label="Github Profile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Github size={18} />
                 </a>
-                <a href={member.linkedin} className="team-card__social-link" aria-label="Linkedin Profile">
+                <a
+                  href={member.linkedin}
+                  className="team-card__social-link"
+                  aria-label="Linkedin Profile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <Linkedin size={18} />
                 </a>
               </div>
@@ -193,6 +217,20 @@ const TeamPage = () => {
           width: 140px;
           height: 140px;
           margin-bottom: 24px;
+        }
+
+        .team-card__image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: var(--radius-2xl);
+          border: 2px solid var(--color-border-light);
+          transition: transform var(--transition-normal), border-color var(--transition-normal);
+        }
+
+        .team-card:hover .team-card__image {
+          transform: scale(1.05);
+          border-color: var(--color-primary-light);
         }
 
         .team-card__image-placeholder {

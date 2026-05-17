@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, Camera, Share2 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import ClassificationResultCard from '../components/result/ClassificationResultCard';
+import FeedbackCard from '../components/result/FeedbackCard';
 import { getHistoryItemById } from '../utils/storageUtils';
+import useHistory from '../hooks/useHistory';
 
 /**
  * Result page — displays full waste classification results using ClassificationResultCard
@@ -12,6 +14,8 @@ const ResultPage = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { feedbackSubmitted, submitUserFeedback } = useHistory();
+  const [hasScrolledToBottom, setHasScrolledToBottom] = useState(false);
 
   // Get result from navigation state or localStorage fallback
   const stateResult = location.state?.result;
@@ -20,6 +24,42 @@ const ResultPage = () => {
 
   const result   = stateResult || historyItem?.result;
   const imageUrl = stateImage  || historyItem?.imageBase64;
+
+  // Track if user has scrolled to the bottom of the result page
+  useEffect(() => {
+    if (feedbackSubmitted || !result) return;
+
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+      // User has reached close to the bottom (within 80px)
+      const reachedBottom = scrollTop + clientHeight >= scrollHeight - 80;
+      
+      // Screen is tall enough that content fits without scrollbar
+      const noScrollbar = scrollHeight <= clientHeight;
+
+      if (reachedBottom || noScrollbar) {
+        setHasScrolledToBottom(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    // Initial check
+    handleScroll();
+
+    // Secondary delayed check to handle asynchronous rendering/images loading
+    const timer = setTimeout(handleScroll, 600);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
+  }, [feedbackSubmitted, result]);
+
+  // Show feedback form only if general user feedback has not been submitted yet AND scrolled to bottom
+  const showFeedback = !feedbackSubmitted && hasScrolledToBottom;
 
   if (!result) {
     return (
@@ -89,6 +129,13 @@ const ResultPage = () => {
       <div className="result-content">
         {/* All result sections delegated to ClassificationResultCard */}
         <ClassificationResultCard result={result} imageUrl={imageUrl} />
+
+        {/* Feedback Section (if not submitted yet) */}
+        {showFeedback && (
+          <FeedbackCard
+            onSubmit={submitUserFeedback}
+          />
+        )}
 
         {/* Action buttons */}
         <div className="result-actions">
