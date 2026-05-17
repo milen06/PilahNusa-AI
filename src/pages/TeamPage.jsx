@@ -1,9 +1,10 @@
-import { Users, Github, Linkedin, ClipboardList, Palette, Monitor, Bot, FlaskConical, Rocket } from 'lucide-react';
+import { Users, Github, Linkedin, ClipboardList, Palette, Monitor, Bot, FlaskConical, Rocket, GraduationCap } from 'lucide-react';
 
 const TEAM_MEMBERS = [
   {
     name: 'Irdan Guntara',
     role: 'Project Manager & AI Engineer',
+    university: 'Universitas Kuningan',
     image: '/images/teams/irdan.jpg',
     desc: 'Memimpin koordinasi tim serta mengintegrasikan model machine learning untuk klasifikasi sampah.',
     github: 'https://github.com/IrdanGu',
@@ -12,6 +13,7 @@ const TEAM_MEMBERS = [
   {
     name: 'Ema Maleni',
     role: 'Frontend Developer',
+    university: 'Universitas Primakara',
     image: '/images/teams/ema.jpeg',
     desc: 'Mengembangkan interface aplikasi dengan React untuk tampilan yang responsif and user-friendly.',
     github: 'https://github.com/milen06',
@@ -20,6 +22,7 @@ const TEAM_MEMBERS = [
   {
     name: 'Nayarah Atmawardani',
     role: 'Backend Developer',
+    university: 'Universitas Sulawesi Barat',
     image: '/images/teams/naya.jpg',
     desc: 'Membangun API dan sistem backend yang robust untuk manajemen data dan fitur aplikasi.',
     github: 'https://github.com/NayarahAtmawardani',
@@ -28,6 +31,7 @@ const TEAM_MEMBERS = [
   {
     name: 'Galih Rizaldy',
     role: 'AI Engineer',
+    university: 'Universitas Kuningan',
     image: '/images/teams/galih.jpg',
     desc: 'Mengembangkan dan mengoptimalkan model kecerdasan buatan untuk akurasi klasifikasi terbaik.',
     github: 'https://github.com/GalihRizaldy',
@@ -36,6 +40,7 @@ const TEAM_MEMBERS = [
   {
     name: 'Gisca Oktavia Ramadhani',
     role: 'Data Scientist',
+    university: 'Universitas Kuningan',
     image: '/images/teams/gisca.png',
     desc: 'Menganalisis data sampah dan melakukan pemrosesan data untuk melatih model AI.',
     github: 'https://github.com/oktaviaramadhanigisca-web',
@@ -44,6 +49,7 @@ const TEAM_MEMBERS = [
   {
     name: 'Ryan Dwi Antoni',
     role: 'Data Scientist',
+    university: 'Universitas Negeri Surabaya',
     image: '/images/teams/ryan.jpg',
     desc: 'Mengolah dataset dan melakukan validasi data untuk memastikan kualitas performa model.',
     github: 'https://github.com/ryanndwii',
@@ -96,6 +102,12 @@ const TeamPage = () => {
             </div>
             <div className="team-card__info">
               <h3 className="team-card__name">{member.name}</h3>
+              {member.university && (
+                <div className="team-card__univ-container">
+                  <GraduationCap size={13} className="team-card__univ-icon" aria-hidden="true" />
+                  <span className="team-card__univ">{member.university}</span>
+                </div>
+              )}
               <p className="team-card__desc">{member.desc}</p>
               <div className="team-card__socials">
                 <a
@@ -270,6 +282,31 @@ const TeamPage = () => {
           font-weight: 700;
           color: var(--color-text-primary);
           margin-top: 8px;
+        }
+
+        .team-card__univ-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          color: var(--color-text-secondary);
+          background: var(--color-bg);
+          padding: 4px 10px;
+          border-radius: var(--radius-md);
+          font-size: 0.75rem;
+          font-weight: 600;
+          align-self: center;
+          margin-top: -6px;
+          border: 1px solid var(--color-border-light);
+        }
+
+        .team-card__univ-icon {
+          color: var(--color-primary);
+          flex-shrink: 0;
+        }
+
+        .team-card__univ {
+          line-height: 1;
         }
 
         .team-card__desc {
