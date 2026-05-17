@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, ImagePlus, Layers, Recycle, Leaf, Zap, CheckCircle, BatteryCharging, AlertTriangle, Trash2 } from 'lucide-react';
+import { Camera, ImagePlus, Layers, Recycle, Leaf, Zap, CheckCircle, BatteryCharging, AlertTriangle } from 'lucide-react';
 import Button from '../components/ui/Button';
 import StatCard from '../components/ui/StatCard';
 import { CATEGORY_LIST } from '../data/wasteCategories';
@@ -33,11 +33,13 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="hero" aria-labelledby="hero-title">
         <div className="hero__content">
-          {/* Brand Icon (Gambar 2 Style) */}
+          {/* Brand Icon (Desktop style logo) */}
           <div className="hero__brand-icon animate-bounce-subtle" aria-hidden="true">
-            <div className="brand-icon-box">
-              <Trash2 size={36} color="white" />
-            </div>
+            <img
+              src="/images/logo.png"
+              alt="PilahNusa AI Logo"
+              className="hero__brand-logo-img"
+            />
           </div>
 
           <h1 className="hero__title" id="hero-title">
@@ -182,15 +184,10 @@ const HomePage = () => {
           margin-bottom: 8px;
         }
 
-        .brand-icon-box {
+        .hero__brand-logo-img {
           width: 80px;
           height: 80px;
-          background: var(--color-primary);
-          border-radius: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 8px 24px rgba(34, 197, 94, 0.3);
+          object-fit: contain;
         }
 
         .hero__title {
