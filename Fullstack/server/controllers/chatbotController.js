@@ -1,0 +1,96 @@
+import fetch from 'node-fetch';
+
+const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+
+class ChatbotError extends Error {
+  constructor(message, statusCode = 500) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+const buildWasteAssistantPrompt = (message) => `
+Anda adalah asisten edukasi PilahNusa AI yang khusus membantu masyarakat Indonesia memahami pemilahan sampah.
+
+Aturan jawaban:
+- Jawab selalu dalam Bahasa Indonesia yang ramah, jelas, dan praktis.
+- Fokus hanya pada kategori sampah, pemilahan, daur ulang, kompos, limbah B3, dampak lingkungan, dan langkah pembuangan aman.
+- Jika pertanyaan di luar topik pemilahan sampah, arahkan dengan sopan bahwa Anda hanya membantu edukasi pengelolaan sampah.
+- Berikan langkah yang bisa dilakukan di rumah bila memungkinkan.
+- Jangan mengarang lokasi drop-point spesifik. Sarankan pengguna mengecek bank sampah, DLH, atau fasilitas resmi terdekat.
+
+Pertanyaan pengguna:
+${message}
+`.trim();
+
+const extractGeminiText = (data) => {
+  const parts = data?.candidates?.[0]?.content?.parts;
+  if (!Array.isArray(parts)) return '';
+
+  return parts
+    .map((part) => part?.text || '')
+    .join('\n')
+    .trim();
+};
+
+export const createChatbotReply = async ({
+  message,
+  apiKey = process.env.GEMINI_API_KEY,
+  fetchFn = fetch,
+}) => {
+  const trimmedMessage = typeof message === 'string' ? message.trim() : '';
+
+  if (!trimmedMessage) {
+    throw new ChatbotError('Pertanyaan tidak boleh kosong.', 400);
+  }
+
+  if (!apiKey) {
+    throw new ChatbotError('GEMINI_API_KEY belum dikonfigurasi di server.', 500);
+  }
+
+  const response = await fetchFn(`${GEMINI_ENDPOINT}?key=${encodeURIComponent(apiKey)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: buildWasteAssistantPrompt(trimmedMessage) }],
+        },
+      ],
+      generationConfig: {
+        temperature: 0.4,
+        topP: 0.9,
+        maxOutputTokens: 700,
+      },
+    }),
+  });
+
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    const messageFromApi = data?.error?.message || 'Gemini gagal memproses pertanyaan.';
+    throw new ChatbotError(messageFromApi, response.status || 502);
+  }
+
+  const reply = extractGeminiText(data);
+  if (!reply) {
+    throw new ChatbotError('Gemini tidak mengembalikan jawaban. Silakan coba lagi.', 502);
+  }
+
+  return reply;
+};
+
+export const chatWithWasteAssistant = async (req, res, next) => {
+  try {
+    const reply = await createChatbotReply({ message: req.body?.message });
+    return res.status(200).json({ reply });
+  } catch (error) {
+    if (error instanceof ChatbotError) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+
+    return next(error);
+  }
+};
