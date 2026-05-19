@@ -1,6 +1,8 @@
-# PilahNusa AI ♻️
+# PilahNusa AI ♻️ ini adalah brech pretest2
 
 PilahNusa AI is a mobile-first web application designed to help users correctly classify waste from photos. It provides intelligent disposal guidance, recycling tips, and maintains a history of user scans to encourage sustainable habits. 
+ 
+pretest 2
 
 The application utilizes a machine learning model powered by TensorFlow.js, running on a Node.js/Express backend, with a responsive and modern React frontend.
 
