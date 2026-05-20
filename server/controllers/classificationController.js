@@ -15,29 +15,20 @@ const __dirname = path.dirname(__filename);
 
 // Class labels
 const CLASS_LABELS = {
-  0: 'Batrai',
-  1: 'Botol Plastik',
-  2: 'Kaca',
-  3: 'Kardus dan Kertas',
+  0: 'Botol Plastik',
+  1: 'Kaca',
+  2: 'Kardus dan Kertas',
+  3: 'Makanan Sisa',
   4: 'Metal',
-  5: 'Sisa buah dan sayur',
-  6: 'Trash Bag',
-  7: 'Sisa Makanan'
+  5: 'Pakaian',
+  6: 'Plastik',
+  7: 'Sisa Buah dan Sayur',
+  8: 'Tumbuhan',
+  9: 'battery'
 };
 
 // Rich data mapping — single source of truth for all waste classes
 const CLASS_DATA_MAP = {
-  'Batrai': {
-    category: 'B3',
-    description: 'Baterai bekas yang mengandung bahan kimia berbahaya seperti merkuri, kadmium, dan timbal yang merusak lingkungan.',
-    recyclingPotential: ['Tidak ada (Hanya pengumpulan untuk dijual)'],
-    disposalGuide: 'Jangan dicampur! Masukkan ke wadah khusus/botol kaca tertutup. Bawa ke pusat pengumpulan limbah B3 terdekat atau drop-point resmi.',
-    environmentalImpact: 'Mengandung merkuri dan timbal yang meracuni air tanah.',
-    decompositionTime: '100 Tahun+',
-    economicValue: 'Sangat Tinggi',
-    recyclingTips: ['Jangan dicampur dengan sampah lain', 'Simpan dalam wadah khusus tertutup', 'Bawa ke drop-point atau bank sampah B3'],
-    youtubeTutorials: [],
-  },
   'Botol Plastik': {
     category: 'anorganik',
     description: 'Botol plastik jenis PET (Polyethylene Terephthalate) yang umum digunakan untuk minuman kemasan dan dapat didaur ulang.',
@@ -60,7 +51,7 @@ const CLASS_DATA_MAP = {
     category: 'anorganik',
     description: 'Pecahan kaca atau botol kaca yang bisa didaur ulang tanpa batas tanpa kehilangan kualitas materialnya.',
     recyclingPotential: ['Toples', 'Kerajinan', 'Wadah', 'Lampu minyak'],
-    disposalGuide: 'Pastikan tidak pecah. Jika pecah, bungkus dengan koran agar tidak melukai petugas. Rebus botol dalam air mendidih untuk mensterilkan sebelum dipakai ulang.',
+    disposalGuide: 'Pastikan tidak pembuangan. Jika pecah, bungkus dengan koran agar tidak melukai petugas. Rebus botol dalam air mendidih untuk mensterilkan sebelum dipakai ulang.',
     environmentalImpact: 'Melukai hewan dan manusia; tidak bisa hancur secara alami.',
     decompositionTime: 'Selamanya',
     economicValue: 'Sedang',
@@ -89,6 +80,20 @@ const CLASS_DATA_MAP = {
       { label: 'Tote Bag', url: 'https://youtu.be/BgCUD6bxiGU?si=YBYGvIdgMbaXqx7N' },
     ],
   },
+  'Makanan Sisa': {
+    category: 'organik',
+    description: 'Sisa makanan konsumsi yang mudah membusuk dan merupakan bahan baku utama kompos.',
+    recyclingPotential: ['Kompos', 'Pakan ternak', 'Bioplastik'],
+    disposalGuide: 'Pisahkan dari plastik pembungkus. Jangan biarkan terlalu berair.',
+    environmentalImpact: 'Menghasikan gas metana (CH4) yang menyebabkan efek rumah kaca.',
+    decompositionTime: '1-4 Minggu',
+    economicValue: 'Rendah',
+    recyclingTips: ['Pisahkan dari plastik pembungkus', 'Tiriskan air berlebih', 'Jadikan kompos atau pakan ternak'],
+    youtubeTutorials: [
+      { label: 'Kompos', url: 'https://youtu.be/PkYgN3xfJ2I?si=-Ef6FKhEqyUhzMnj' },
+      { label: 'Bioplastik', url: 'https://youtu.be/4RGQzvvMFpc?si=6hdaw8rkGm-tduZc' },
+    ],
+  },
   'Metal': {
     category: 'anorganik',
     description: 'Kaleng bekas minuman, makanan, atau logam lainnya yang memiliki nilai ekonomi tinggi dan dapat didaur ulang berkali-kali.',
@@ -106,22 +111,35 @@ const CLASS_DATA_MAP = {
       { label: 'Asbak', url: 'https://youtube.com/shorts/XDzgPWdMNu4?si=k-SUK18VSyadxVW1' },
     ],
   },
-  'Trash Bag': {
+  'Pakaian': {
     category: 'anorganik',
-    description: 'Kantong plastik jenis HDPE/PP yang dapat didaur ulang menjadi berbagai produk kreatif.',
-    recyclingPotential: ['Tas', 'Ecobreak', 'Hiasan bunga'],
-    disposalGuide: 'Bersihkan dari sisa minyak atau sabun agar tidak berbau.',
-    environmentalImpact: 'Menyumbat saluran air dan menyebabkan banjir.',
-    decompositionTime: '10-100 Tahun',
+    description: 'Pakaian bekas, kain, atau produk tekstil lainnya yang dapat didaur ulang menjadi lap, kerajinan tangan, atau serat kain baru.',
+    recyclingPotential: ['Lap pembersih', 'Tas belanja (Tote bag)', 'Keset kaki', 'Isian bantal/boneka', 'Kerajinan tangan'],
+    disposalGuide: 'Pastikan pakaian dalam kondisi bersih dan kering. Pisahkan pakaian layak pakai untuk didonasikan, dan pakaian rusak untuk didaur ulang.',
+    environmentalImpact: 'Serat sintetis (seperti poliester) dapat mencemari lingkungan dengan mikroplastik jika terurai perlahan.',
+    decompositionTime: '20-200 Tahun',
     economicValue: 'Sedang',
-    recyclingTips: ['Bersihkan dari sisa minyak atau sabun', 'Kumpulkan dalam jumlah banyak sebelum dijual', 'Hindari membakar plastik'],
+    recyclingTips: ['Pakaian layak pakai sebaiknya didonasikan', 'Potong pakaian rusak menjadi kain lap untuk menghemat penggunaan tisu', 'Gunakan kain perca untuk kerajinan tangan kreatif'],
     youtubeTutorials: [
-      { label: 'Tas', url: 'https://youtu.be/MxV7P197uUM?si=WKfJp9g3ZTlg_LIe' },
-      { label: 'Ecobreak', url: 'https://youtube.com/shorts/g7HsT6AJkxE?si=kS8NP8YHSVeoHpCl' },
-      { label: 'Hiasan Bunga', url: 'https://youtu.be/RipPtDG1knw?si=iBBEh52HPCi561jy' },
+      { label: 'Tote Bag dari Baju Bekas', url: 'https://youtu.be/wQc7G81H0B8' },
+      { label: 'Keset Kaki dari Kaos', url: 'https://youtu.be/shm_6U0vYfA' }
     ],
   },
-  'Sisa buah dan sayur': {
+  'Plastik': {
+    category: 'anorganik',
+    description: 'Sampah plastik umum seperti kantong plastik, sedotan, kemasan makanan, atau produk plastik lainnya yang sulit terurai.',
+    recyclingPotential: ['Ecobrick', 'Pot tanaman', 'Kerajinan tangan bunga', 'Wadah penyimpanan'],
+    disposalGuide: 'Bilas dari sisa makanan/minuman, keringkan, lalu kumpulkan dalam satu wadah khusus sampah plastik.',
+    environmentalImpact: 'Plastik tidak dapat hancur secara alami, melainkan terpecah menjadi mikroplastik yang meracuni tanah, air, dan makhluk hidup.',
+    decompositionTime: '100-500 Tahun',
+    economicValue: 'Sedang',
+    recyclingTips: ['Bersihkan sisa makanan agar tidak mengundang bakteri', 'Kurangi penggunaan plastik sekali pakai', 'Buat ecobrick dari potongan plastik kecil'],
+    youtubeTutorials: [
+      { label: 'Ecobrick', url: 'https://youtube.com/shorts/g7HsT6AJkxE?si=kS8NP8YHSVeoHpCl' },
+      { label: 'Kerajinan dari Sedotan', url: 'https://youtu.be/P_rVigD7h-A' }
+    ],
+  },
+  'Sisa Buah dan Sayur': {
     category: 'organik',
     description: 'Sisa buah-buahan dan sayuran dapur yang kaya nutrisi dan sangat baik untuk kompos dan eco-enzyme.',
     recyclingPotential: ['Pupuk Organik Cair', 'Eco-Enzyme'],
@@ -135,51 +153,9 @@ const CLASS_DATA_MAP = {
       { label: 'Eco-Enzyme', url: 'https://youtube.com/shorts/mRMvz9BgOh4?si=Hf5YtcorAWG5furz' },
     ],
   },
-  'Sisa Makanan': {
+  'Tumbuhan': {
     category: 'organik',
-    description: 'Sisa makanan karbohidrat seperti nasi, roti, dan mie yang mudah terurai dan kaya bahan organik.',
-    recyclingPotential: ['Kompos', 'Pakan ternak', 'Bioplastik'],
-    disposalGuide: 'Pisahkan dari plastik pembungkus. Jangan biarkan terlalu berair.',
-    environmentalImpact: 'Menghasilkan gas metana (CH4) yang menyebabkan efek rumah kaca.',
-    decompositionTime: '1-4 Minggu',
-    economicValue: 'Rendah',
-    recyclingTips: ['Pisahkan dari plastik pembungkus', 'Tiriskan air berlebih', 'Jadikan kompos atau pakan ternak'],
-    youtubeTutorials: [
-      { label: 'Kompos', url: 'https://youtu.be/PkYgN3xfJ2I?si=-Ef6FKhEqyUhzMnj' },
-      { label: 'Bioplastik', url: 'https://youtu.be/4RGQzvvMFpc?si=6hdaw8rkGm-tduZc' },
-    ],
-  },
-  'Sisa buah': {
-    category: 'organik',
-    description: 'Kulit buah, biji, atau sisa buah yang tidak termakan, kaya senyawa bioaktif untuk kompos dan eco-enzyme.',
-    recyclingPotential: ['Pupuk Organik Cair', 'Eco-Enzyme'],
-    disposalGuide: 'Potong kecil-kecil untuk mempercepat proses pengomposan.',
-    environmentalImpact: 'Menimbulkan bau busuk dan mengundang lalat pembawa penyakit.',
-    decompositionTime: '2-6 Minggu',
-    economicValue: 'Sedang',
-    recyclingTips: ['Potong kecil untuk mempercepat pengomposan', 'Buat eco-enzyme dengan rasio 3:1:10'],
-    youtubeTutorials: [
-      { label: 'Pupuk Cair', url: 'https://youtu.be/wm5M7K_Snno?si=bmaZw-OTuiW2jRXy' },
-      { label: 'Eco-Enzyme', url: 'https://youtube.com/shorts/mRMvz9BgOh4?si=Hf5YtcorAWG5furz' },
-    ],
-  },
-  'Makanan Sisa': {
-    category: 'organik',
-    description: 'Sisa makanan konsumsi yang mudah membusuk dan merupakan bahan baku utama kompos.',
-    recyclingPotential: ['Kompos', 'Pakan ternak', 'Bioplastik'],
-    disposalGuide: 'Pisahkan dari plastik pembungkus. Jangan biarkan terlalu berair.',
-    environmentalImpact: 'Menghasilkan gas metana (CH4) yang menyebabkan efek rumah kaca.',
-    decompositionTime: '1-4 Minggu',
-    economicValue: 'Rendah',
-    recyclingTips: ['Pisahkan dari plastik pembungkus', 'Tiriskan air berlebih', 'Jadikan kompos atau pakan ternak'],
-    youtubeTutorials: [
-      { label: 'Kompos', url: 'https://youtu.be/PkYgN3xfJ2I?si=-Ef6FKhEqyUhzMnj' },
-      { label: 'Bioplastik', url: 'https://youtu.be/4RGQzvvMFpc?si=6hdaw8rkGm-tduZc' },
-    ],
-  },
-  'Vegetation': {
-    category: 'organik',
-    description: 'Sisa tanaman, dedaunan kering, ranting, atau rumput yang merupakan bahan ideal untuk kompos.',
+    description: 'Sisa potongan tanaman, daun kering, rumput, atau ranting pohon yang merupakan bahan organik alami.',
     recyclingPotential: ['Kompos', 'Mulsa (pelindung tanah)'],
     disposalGuide: 'Cacah daun atau ranting menjadi bagian kecil agar lebih cepat terurai saat dikomposkan.',
     environmentalImpact: 'Menumpuk menjadi timbulan sampah yang menyumbat saluran air jika dibuang sembarangan.',
@@ -187,25 +163,20 @@ const CLASS_DATA_MAP = {
     economicValue: 'Rendah',
     recyclingTips: ['Cacah menjadi bagian kecil untuk mempercepat penguraian', 'Campurkan dengan bahan hijau untuk kompos seimbang', 'Gunakan sebagai mulsa pelindung tanah'],
     youtubeTutorials: [
-      { label: 'Kompos', url: 'https://youtu.be/YRHcpHWtf6A?si=JBk3WjW8olL6_yxZ' },
-      { label: 'Mulsa', url: 'https://youtu.be/CMBwbm_hlNY?si=pSir1nWcdtH2NyWp' },
+      { label: 'Kompos Daun Kering', url: 'https://youtu.be/YRHcpHWtf6A?si=JBk3WjW8olL6_yxZ' }
     ],
   },
-  'Kertas': {
-    category: 'anorganik',
-    description: 'Kertas bekas cetak, koran, atau buku yang dapat didaur ulang untuk mengurangi penebangan pohon.',
-    recyclingPotential: ['Wallpaper dinding', 'Kerajinan tangan', 'Bungkus gorengan', 'Tote bag'],
-    disposalGuide: 'Wajib kering. Lipat/pipihkan untuk menghemat ruang penyimpanan.',
-    environmentalImpact: 'Jika basah, kualitas serat rusak dan tidak bisa didaur ulang.',
-    decompositionTime: '2-5 Bulan',
-    economicValue: 'Tinggi',
-    recyclingTips: ['Pastikan kering sebelum disimpan', 'Lipat pipih untuk hemat ruang', 'Jual ke pengepul kertas atau bank sampah'],
-    youtubeTutorials: [
-      { label: 'Wallpaper Dinding', url: 'https://youtu.be/xE0ik8bWc3c?si=jn81gsbWdtBw5vqy' },
-      { label: 'Kerajinan Tangan', url: 'https://youtu.be/--jaFz8e-3g?si=srg9Pm_IRt6hsKkK' },
-      { label: 'Tote Bag', url: 'https://youtu.be/BgCUD6bxiGU?si=YBYGvIdgMbaXqx7N' },
-    ],
-  },
+  'battery': {
+    category: 'B3',
+    description: 'Baterai bekas yang mengandung bahan kimia berbahaya seperti merkuri, kadmium, dan timbal yang merusak lingkungan.',
+    recyclingPotential: ['Tidak ada (Hanya pengumpulan untuk dijual)'],
+    disposalGuide: 'Jangan dicampur! Masukkan ke wadah khusus/botol kaca tertutup. Bawa ke pusat pengumpulan limbah B3 terdekat atau drop-point resmi.',
+    environmentalImpact: 'Mengandung merkuri dan timbal yang meracuni air tanah.',
+    decompositionTime: '100 Tahun+',
+    economicValue: 'Sangat Tinggi',
+    recyclingTips: ['Jangan dicampur dengan sampah lain', 'Simpan dalam wadah khusus tertutup', 'Bawa ke drop-point atau bank sampah B3'],
+    youtubeTutorials: [],
+  }
 };
 
 // --- Model Loading (Singleton) ---
