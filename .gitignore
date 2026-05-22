@@ -265,3 +265,7 @@ NEWUPDATE.md
 collaboration_tutorial.md
 NEW_UPDATE_IMPLEMENTATION_PLAN.md
 
+# Playwright
+playwright-report/
+test-results/
+
