@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { classifyWaste, mockClassifyWaste } from '../services/aiService';
+import { classifyWaste } from '../services/aiService';
 
 /**
  * Custom hook for AI waste classification
@@ -13,9 +13,8 @@ const useClassifier = () => {
   /**
    * Analyze a waste image
    * @param {string} base64Image - Base64 image data
-   * @param {boolean} [useMock=false] - Use mock data for testing
    */
-  const analyze = useCallback(async (base64Image, useMock = false) => {
+  const analyze = useCallback(async (base64Image) => {
     setIsAnalyzing(true);
     setError(null);
     setResult(null);

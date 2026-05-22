@@ -1,8 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Camera, ImagePlus, Layers, Recycle, Leaf, Zap, CheckCircle, BatteryCharging, AlertTriangle } from 'lucide-react';
+import { Camera, ImagePlus, Layers, Recycle, Leaf, BatteryCharging, AlertTriangle } from 'lucide-react';
 import Button from '../components/ui/Button';
-import StatCard from '../components/ui/StatCard';
 import { CATEGORY_LIST } from '../data/wasteCategories';
 
 /**
@@ -10,12 +9,6 @@ import { CATEGORY_LIST } from '../data/wasteCategories';
  */
 const HomePage = () => {
   const navigate = useNavigate();
-
-  const features = [
-    { icon: <Zap size={14} />, label: 'AI Powered' },
-    { icon: <Leaf size={14} />, label: 'Ramah Lingkungan' },
-    { icon: <CheckCircle size={14} />, label: 'Mudah Digunakan' },
-  ];
 
   // Helper to render lucide icon by name
   const renderIcon = (iconName, color) => {

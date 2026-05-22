@@ -7,7 +7,7 @@ import Loader from '../components/ui/Loader';
 import useCamera from '../hooks/useCamera';
 import useClassifier from '../hooks/useClassifier';
 import useHistory from '../hooks/useHistory';
-import { fileToDataUrl, compressImage, createThumbnail } from '../utils/imageUtils';
+import { fileToDataUrl, compressImage } from '../utils/imageUtils';
 
 /** Scan page states */
 const SCAN_STATE = {

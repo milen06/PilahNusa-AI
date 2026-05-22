@@ -4,7 +4,6 @@ import { Search, Clock, BarChart3, Trash2, Camera, AlertTriangle } from 'lucide-
 import Button from '../components/ui/Button';
 import CategoryBadge from '../components/ui/Badge';
 import useHistory from '../hooks/useHistory';
-import { CATEGORY_LIST } from '../data/wasteCategories';
 
 const FILTER_OPTIONS = [
   { key: 'all', label: 'Semua' },
@@ -29,7 +28,7 @@ const formatDate = (isoString) => {
  */
 const HistoryPage = () => {
   const navigate = useNavigate();
-  const { history, totalScans, categoryCounts, removeFromHistory, clearAllHistory, filterByCategory, searchHistory } = useHistory();
+  const { totalScans, categoryCounts, removeFromHistory, clearAllHistory, filterByCategory } = useHistory();
 
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');

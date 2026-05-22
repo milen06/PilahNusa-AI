@@ -19,6 +19,11 @@ const useCamera = () => {
     setIsLoading(true);
     setError(null);
 
+    // Clean up any existing stream before starting a new one to prevent resource leaks
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((track) => track.stop());
+    }
+
     try {
       const constraints = {
         video: {

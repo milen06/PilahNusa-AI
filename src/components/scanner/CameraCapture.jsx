@@ -1,6 +1,4 @@
-import React, { useEffect } from 'react';
-import { FlipHorizontal, X, Sun, ZoomIn } from 'lucide-react';
-import Button from '../ui/Button';
+import { FlipHorizontal, X, Sun } from 'lucide-react';
 
 /**
  * Camera capture component with live preview and scanner UI
@@ -13,7 +11,6 @@ const CameraCapture = ({
   onCapture,
   onToggleCamera,
   onStop,
-  facingMode,
 }) => {
   return (
     <div className="camera-capture">

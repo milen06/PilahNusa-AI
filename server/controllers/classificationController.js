@@ -8,7 +8,6 @@ import { localFileHandler } from '../localFileHandler.js';
 import sharp from 'sharp';
 
 // Set to 'graph' for tfjs_graph_model or 'layers' for layers-model
-const MODEL_FORMAT = 'graph';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
