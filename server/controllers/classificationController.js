@@ -1,4 +1,4 @@
-import tf from '@tensorflow/tfjs';
+import { tfHelper } from '../utils/tfHelper.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -186,10 +186,14 @@ async function loadModel() {
   const modelPath = path.join(__dirname, '../data/tfjs_model/model.json');
   console.log('[AI] Loading TensorFlow.js model from:', modelPath);
   // Use localFileHandler for both graph and layers models from filesystem
-  model = await tf.loadGraphModel(localFileHandler(modelPath));
+  model = await tfHelper.loadGraphModel(localFileHandler(modelPath));
   console.log('[AI] Model loaded and ready.');
   return model;
 }
+
+export const __resetModelForTesting = () => {
+  model = null;
+};
 
 // Pre-load the model when server starts
 loadModel().catch(err => console.error('[AI] Failed to pre-load model:', err));
@@ -214,7 +218,7 @@ async function preprocessImage(imagePath) {
   }
 
   // Create tensor with shape [1, 224, 224, 3]
-  return tf.tensor4d(float32Data, [1, info.height, info.width, info.channels]);
+  return tfHelper.tensor4d(float32Data, [1, info.height, info.width, info.channels]);
 }
 
 
@@ -242,18 +246,25 @@ export const classifyWaste = async (req, res, next) => {
 
     // Load model and preprocess image
     const aiModel = await loadModel();
-    const inputTensor = await preprocessImage(imagePath);
+    
+    let inputTensor = null;
+    let outputTensor = null;
+    let probabilities = null;
 
-    // Run inference - graph models use execute() with named inputs
-    // Input name comes from model.json signature: 'input_layer_2'
-    const outputMap = aiModel.execute({ 'input_layer_2': inputTensor });
-    // Output can be a tensor or named map, handle both cases
-    const outputTensor = Array.isArray(outputMap) ? outputMap[0] : outputMap;
-    const probabilities = await outputTensor.data();
+    try {
+      inputTensor = await preprocessImage(imagePath);
 
-    // Cleanup tensors
-    inputTensor.dispose();
-    outputTensor.dispose();
+      // Run inference - graph models use execute() with named inputs
+      // Input name comes from model.json signature: 'input_layer_2'
+      const outputMap = aiModel.execute({ 'input_layer_2': inputTensor });
+      // Output can be a tensor or named map, handle both cases
+      outputTensor = Array.isArray(outputMap) ? outputMap[0] : outputMap;
+      probabilities = await outputTensor.data();
+    } finally {
+      // Guaranteed cleanup of tensors to prevent server memory leaks
+      if (inputTensor) inputTensor.dispose();
+      if (outputTensor) outputTensor.dispose();
+    }
 
     // Find class with highest probability
     let maxProb = -1;
