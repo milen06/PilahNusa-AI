@@ -1,5 +1,7 @@
 # PilahNusa AI
 
+![Tampilan UI PilahNusa AI](public/ui-interface.png)
+
 PilahNusa AI adalah aplikasi web mobile-first untuk membantu pengguna memilah sampah melalui foto. Pengguna dapat mengambil atau mengunggah gambar sampah, lalu aplikasi akan mengklasifikasikan jenis sampah tersebut dan menampilkan panduan pembuangan, tips daur ulang, serta riwayat pemindaian.
 
 Aplikasi ini menggunakan frontend React + Vite, backend Node.js/Express, model klasifikasi gambar berbasis TensorFlow.js, dan chatbot edukasi pemilahan sampah yang terhubung ke Gemini API.
