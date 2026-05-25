@@ -1,101 +1,258 @@
-# PilahNusa AI ♻️
+# PilahNusa AI
 
-PilahNusa AI is a mobile-first web application designed to help users correctly classify waste from photos. It provides intelligent disposal guidance, recycling tips, and maintains a history of user scans to encourage sustainable habits. 
+PilahNusa AI adalah aplikasi web mobile-first untuk membantu pengguna memilah sampah melalui foto. Pengguna dapat mengambil atau mengunggah gambar sampah, lalu aplikasi akan mengklasifikasikan jenis sampah tersebut dan menampilkan panduan pembuangan, tips daur ulang, serta riwayat pemindaian.
 
-The application utilizes a machine learning model powered by TensorFlow.js, running on a Node.js/Express backend, with a responsive and modern React frontend.
+Aplikasi ini menggunakan frontend React + Vite, backend Node.js/Express, model klasifikasi gambar berbasis TensorFlow.js, dan chatbot edukasi pemilahan sampah yang terhubung ke Gemini API.
 
-## 🌟 Key Features
+## Fitur Utama
 
-- **AI-Powered Waste Classification:** Instantly classify waste types from uploaded or captured images.
-- **Smart Disposal Guides:** Receive actionable advice on how to properly dispose of or recycle the scanned item.
-- **Scan History:** Keep track of your past classifications and environmental contributions.
-- **Mobile-First Design:** Optimized for a seamless experience on mobile devices.
+- Klasifikasi sampah dari gambar menggunakan model Machine Learning.
+- Panduan pembuangan dan tips daur ulang berdasarkan hasil klasifikasi.
+- Riwayat pemindaian sampah.
+- Chatbot edukasi pengelolaan sampah dalam Bahasa Indonesia.
+- Tampilan responsif yang dioptimalkan untuk perangkat mobile.
 
-## 💻 Tech Stack
+## Tech Stack
 
-- **Frontend:** React 18, Vite, React Router DOM, Lucide React (Icons)
-- **Backend:** Node.js, Express, Multer (Image uploads), Sharp (Image preprocessing)
-- **Machine Learning:** TensorFlow.js (`@tensorflow/tfjs` running on Node.js)
+- Frontend: React 18, Vite, React Router DOM, Lucide React
+- Backend: Node.js, Express, Multer, Sharp
+- Machine Learning: TensorFlow.js
+- AI Chatbot: Gemini API
 
-## 📂 Project Structure
+## Struktur Proyek
 
 ```text
 PilahNusa-AI/
-├── public/                 # Static assets
-├── server/                 # Express backend application
-│   ├── controllers/        # Request handling and ML inference logic
-│   ├── data/               # TensorFlow.js model files (`model.json`, `.bin`)
-│   ├── middleware/         # Express middlewares
-│   ├── models/             # Database/Storage models
-│   ├── routes/             # API route definitions
-│   └── server.js           # Backend entry point
-├── src/                    # React frontend application
-│   ├── components/         # Reusable UI components
-│   ├── pages/              # Main application views (Home, Scan, History)
-│   ├── services/           # API interaction logic
-│   └── utils/              # Helper functions
-├── .env.example            # Example environment variables
-├── package.json            # Project dependencies and scripts
-└── vite.config.js          # Vite configuration
+├── public/                     # Aset statis
+├── server/                     # Aplikasi backend Express
+│   ├── controllers/            # Logic API, klasifikasi ML, dan chatbot
+│   ├── data/                   # Data lokal dan model TensorFlow.js
+│   │   └── tfjs_model/         # model.json dan file bobot .bin
+│   ├── middleware/             # Middleware Express
+│   ├── models/                 # Model penyimpanan data
+│   ├── routes/                 # Definisi route API
+│   └── server.js               # Entry point backend
+├── src/                        # Aplikasi frontend React
+│   ├── components/             # Komponen UI
+│   ├── hooks/                  # Custom hooks
+│   ├── pages/                  # Halaman aplikasi
+│   ├── services/               # Integrasi API frontend
+│   └── utils/                  # Helper function
+├── .env.example                # Contoh konfigurasi environment
+├── package.json                # Dependensi dan script npm
+└── vite.config.js              # Konfigurasi Vite dan proxy API
 ```
 
-## 🚀 Getting Started
+## Petunjuk Setup Environment
 
-Follow these instructions to set up and run the project locally.
+### 1. Prasyarat
 
-### Prerequisites
+Pastikan perangkat sudah memiliki:
 
-Ensure you have the following installed on your local machine:
-- [Node.js](https://nodejs.org/) (v16 or higher recommended)
-- npm (comes with Node.js)
+- Node.js versi 16 atau lebih baru
+- npm
+- Git
 
-### Installation
+Untuk mengecek versi:
 
-1. **Clone the repository** (if you haven't already):
-   ```bash
-   git clone <repository-url>
-   cd PilahNusa-AI
-   ```
+```bash
+node -v
+npm -v
+git --version
+```
 
-2. **Install the dependencies:**
-   This command installs both frontend and backend dependencies defined in `package.json`.
-   ```bash
-   npm install
-   ```
+### 2. Clone Repository
 
-3. **Environment Setup:**
-   Duplicate the `.env.example` file to create a `.env` file and configure any necessary environment variables.
-   ```bash
-   cp .env.example .env
-   ```
+```bash
+git clone <repository-url>
+cd PilahNusa-AI
+```
 
-### Running the Application
+Jika project sudah tersedia di komputer lokal, cukup masuk ke folder project:
 
-You can start both the frontend development server and the backend Express server concurrently using a single command:
+```bash
+cd PilahNusa-AI
+```
+
+### 3. Install Dependensi
+
+Jalankan perintah berikut dari root project:
+
+```bash
+npm install
+```
+
+Perintah ini akan menginstal dependensi frontend dan backend yang didefinisikan di `package.json`.
+
+### 4. Konfigurasi Environment Variable
+
+Buat file `.env` dari template `.env.example`.
+
+Linux/macOS:
+
+```bash
+cp .env.example .env
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Isi nilai berikut di file `.env`:
+
+```env
+GEMINI_API_KEY=masukkan_api_key_gemini_anda
+```
+
+Keterangan:
+
+- `GEMINI_API_KEY` digunakan oleh fitur chatbot edukasi sampah.
+- Jika API key belum diisi, fitur klasifikasi sampah tetap dapat berjalan, tetapi chatbot akan gagal menjawab.
+- Backend menggunakan port `5000` secara default. Jika ingin mengganti port, tambahkan `PORT` di file `.env`.
+
+Contoh:
+
+```env
+GEMINI_API_KEY=masukkan_api_key_gemini_anda
+PORT=5000
+```
+
+## Tautan Model Machine Learning
+
+Model Machine Learning yang digunakan adalah model TensorFlow.js Graph Model dan sudah disertakan di dalam repository pada folder:
+
+```text
+server/data/tfjs_model/
+```
+
+File utama model:
+
+```text
+server/data/tfjs_model/model.json
+```
+
+File bobot model:
+
+```text
+server/data/tfjs_model/group1-shard*.bin
+```
+
+Saat ini tidak diperlukan tautan download eksternal karena model sudah tersedia secara lokal di repository. Backend akan memuat model secara otomatis dari:
+
+```text
+server/data/tfjs_model/model.json
+```
+
+Jika ingin mengganti model:
+
+1. Pastikan model baru sudah dikonversi ke format TensorFlow.js Graph Model.
+2. Ganti file `model.json` dan semua file bobot `.bin` di folder `server/data/tfjs_model/`.
+3. Jika input layer, ukuran gambar, atau jumlah kelas berubah, sesuaikan logic di `server/controllers/classificationController.js`.
+4. Jika label kelas berubah, perbarui `CLASS_LABELS` dan `CLASS_DATA_MAP` di file yang sama.
+
+## Cara Menjalankan Aplikasi
+
+### Menjalankan Frontend dan Backend Sekaligus
+
+Gunakan perintah berikut dari root project:
 
 ```bash
 npm run dev:all
 ```
 
-- **Frontend:** Usually accessible at `http://localhost:5173` (Vite)
-- **Backend API:** Usually runs on `http://localhost:3000`
+Perintah ini menjalankan:
 
----
+- Frontend Vite di `http://localhost:5173`
+- Backend Express di `http://localhost:5000`
 
-## 🧠 Machine Learning Integration
+Buka aplikasi melalui browser:
 
-PilahNusa AI processes images entirely on the backend to ensure performance and accuracy. Here is how the AI pipeline works:
+```text
+http://localhost:5173
+```
 
-1. **Capture & Upload:** The frontend captures an image and sends it as `multipart/form-data` to the `/api/classifications` endpoint.
-2. **Preprocessing:** The backend uses `sharp` to resize the image to **224x224**, extracts the RGB channels, and normalizes pixel values to floats between 0.0 and 1.0. It converts the image into a tensor of shape `[1, 224, 224, 3]`.
-3. **Inference:** A pre-trained **TensorFlow.js Graph Model** is loaded from `server/data/tfjs_model/`. The image tensor is fed into the model's input layer (`input_layer_2`), and the model executes the prediction.
-4. **Classification:** The output probability array is analyzed to find the highest match. It is then mapped to predefined `CLASS_LABELS` to attach rich contextual data (disposal guides, recycling tips) which is sent back to the client.
+Frontend sudah memiliki proxy Vite untuk meneruskan request `/api` ke backend `http://localhost:5000`.
 
-### Updating the Model (For ML Engineers)
+### Menjalankan Frontend Saja
 
-If you need to update or replace the AI model:
+```bash
+npm run dev
+```
 
-1. **Format:** Ensure your model is a **TensorFlow.js Graph Model**. Use `tensorflowjs_converter` if converting from Keras (`.h5`) or SavedModel.
-2. **Replace Files:** Replace the `model.json` and `.bin` weights in the `server/data/tfjs_model/` directory.
-3. **Update Logic:** If your new model has a different input size or input layer name, update the parameters in `server/controllers/classificationController.js`.
-4. **Update Classes:** If the classes change, update the `CLASS_LABELS` and `CLASS_DATA_MAP` in the controller to ensure accurate frontend descriptions.
+Frontend akan berjalan di:
+
+```text
+http://localhost:5173
+```
+
+### Menjalankan Backend Saja
+
+```bash
+npm run server
+```
+
+Backend akan berjalan di:
+
+```text
+http://localhost:5000
+```
+
+## Script yang Tersedia
+
+```bash
+npm run dev
+```
+
+Menjalankan frontend Vite.
+
+```bash
+npm run server
+```
+
+Menjalankan backend Express.
+
+```bash
+npm run dev:all
+```
+
+Menjalankan frontend dan backend secara bersamaan.
+
+```bash
+npm run build
+```
+
+Membuat build production frontend.
+
+```bash
+npm run preview
+```
+
+Menjalankan preview build production Vite.
+
+```bash
+npm run lint
+```
+
+Menjalankan ESLint untuk memeriksa kualitas kode.
+
+## Alur Klasifikasi Sampah
+
+1. Pengguna mengambil atau mengunggah gambar sampah dari frontend.
+2. Frontend mengirim gambar ke endpoint backend `/api/classifications`.
+3. Backend memproses gambar menggunakan `sharp`:
+   - resize ke 224x224 piksel
+   - konversi ke format RGB
+   - normalisasi nilai piksel ke rentang 0 sampai 1
+4. TensorFlow.js memuat model dari `server/data/tfjs_model/model.json`.
+5. Model menghasilkan prediksi kelas sampah.
+6. Backend mengembalikan hasil klasifikasi, tingkat confidence, deskripsi, panduan pembuangan, dan tips daur ulang.
+7. Hasil disimpan ke riwayat pemindaian.
+
+## Catatan Troubleshooting
+
+- Jika chatbot gagal, pastikan `GEMINI_API_KEY` sudah benar di file `.env`.
+- Jika klasifikasi gagal saat server pertama kali dijalankan, cek apakah folder `server/data/tfjs_model/` berisi `model.json` dan semua file `.bin`.
+- Jika frontend tidak dapat mengakses API, pastikan backend berjalan di port `5000`.
+- Jika port `5173` atau `5000` sudah digunakan, hentikan proses yang memakai port tersebut atau ubah konfigurasi port.
