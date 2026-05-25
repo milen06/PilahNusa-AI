@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "server/server.js",
+      "src": "FullStack/server/server.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["server/data/tfjs_model/**"]
+        "includeFiles": ["FullStack/server/data/tfjs_model/**"]
       }
     },
     {
-      "src": "package.json",
+      "src": "FullStack/package.json",
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
     }
@@ -17,7 +17,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/server.js"
+      "dest": "FullStack/server/server.js"
     },
     {
       "handle": "filesystem"

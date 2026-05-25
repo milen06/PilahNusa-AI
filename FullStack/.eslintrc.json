@@ -1,4 +1,10 @@
 {
+  "ignorePatterns": [
+    "dist/",
+    "node_modules/",
+    "playwright-report/",
+    "test-results/"
+  ],
   "env": {
     "browser": true,
     "es2020": true,

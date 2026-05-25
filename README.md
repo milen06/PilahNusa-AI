@@ -1,6 +1,6 @@
 # PilahNusa AI
 
-![Tampilan UI PilahNusa AI](public/ui-interface.png)
+![Tampilan UI PilahNusa AI](FullStack/public/ui-interface.png)
 
 PilahNusa AI adalah aplikasi web mobile-first untuk membantu pengguna memilah sampah melalui foto. Pengguna dapat mengambil atau mengunggah gambar sampah, lalu aplikasi akan mengklasifikasikan jenis sampah tersebut dan menampilkan panduan pembuangan, tips daur ulang, serta riwayat pemindaian.
 
@@ -42,24 +42,29 @@ Analisis dataset oleh tim Data Scientist tersedia melalui Streamlit:
 
 ```text
 PilahNusa-AI/
-├── public/                     # Aset statis
-├── server/                     # Aplikasi backend Express
-│   ├── controllers/            # Logic API, klasifikasi ML, dan chatbot
-│   ├── data/                   # Data lokal dan model TensorFlow.js
-│   │   └── tfjs_model/         # model.json dan file bobot .bin
-│   ├── middleware/             # Middleware Express
-│   ├── models/                 # Model penyimpanan data
-│   ├── routes/                 # Definisi route API
-│   └── server.js               # Entry point backend
-├── src/                        # Aplikasi frontend React
-│   ├── components/             # Komponen UI
-│   ├── hooks/                  # Custom hooks
-│   ├── pages/                  # Halaman aplikasi
-│   ├── services/               # Integrasi API frontend
-│   └── utils/                  # Helper function
-├── .env.example                # Contoh konfigurasi environment
-├── package.json                # Dependensi dan script npm
-└── vite.config.js              # Konfigurasi Vite dan proxy API
+├── AI engeneer/                # Ruang kerja tim AI Engineer
+├── Data Scients/               # Ruang kerja tim Data Scientist
+├── FullStack/                  # Aplikasi web fullstack
+│   ├── public/                 # Aset statis
+│   ├── server/                 # Aplikasi backend Express
+│   │   ├── controllers/        # Logic API, klasifikasi ML, dan chatbot
+│   │   ├── data/               # Data lokal dan model TensorFlow.js
+│   │   │   └── tfjs_model/     # model.json dan file bobot .bin
+│   │   ├── middleware/         # Middleware Express
+│   │   ├── models/             # Model penyimpanan data
+│   │   ├── routes/             # Definisi route API
+│   │   └── server.js           # Entry point backend
+│   ├── src/                    # Aplikasi frontend React
+│   │   ├── components/         # Komponen UI
+│   │   ├── hooks/              # Custom hooks
+│   │   ├── pages/              # Halaman aplikasi
+│   │   ├── services/           # Integrasi API frontend
+│   │   └── utils/              # Helper function
+│   ├── .env.example            # Contoh konfigurasi environment
+│   ├── package.json            # Dependensi dan script npm
+│   └── vite.config.js          # Konfigurasi Vite dan proxy API
+├── README.md
+└── vercel.json                 # Konfigurasi deploy Vercel dari root repository
 ```
 
 ## Petunjuk Setup Environment
@@ -93,15 +98,21 @@ Jika project sudah tersedia di komputer lokal, cukup masuk ke folder project:
 cd PilahNusa-AI
 ```
 
+Masuk ke folder aplikasi fullstack sebelum menjalankan perintah npm:
+
+```bash
+cd FullStack
+```
+
 ### 3. Install Dependensi
 
-Jalankan perintah berikut dari root project:
+Jalankan perintah berikut dari folder `FullStack`:
 
 ```bash
 npm install
 ```
 
-Perintah ini akan menginstal dependensi frontend dan backend yang didefinisikan di `package.json`.
+Perintah ini akan menginstal dependensi frontend dan backend yang didefinisikan di `FullStack/package.json`.
 
 ### 4. Konfigurasi Environment Variable
 
@@ -143,39 +154,39 @@ PORT=5000
 Model Machine Learning yang digunakan adalah model TensorFlow.js Graph Model dan sudah disertakan di dalam repository pada folder:
 
 ```text
-server/data/tfjs_model/
+FullStack/server/data/tfjs_model/
 ```
 
 File utama model:
 
 ```text
-server/data/tfjs_model/model.json
+FullStack/server/data/tfjs_model/model.json
 ```
 
 File bobot model:
 
 ```text
-server/data/tfjs_model/group1-shard*.bin
+FullStack/server/data/tfjs_model/group1-shard*.bin
 ```
 
 Saat ini tidak diperlukan tautan download eksternal karena model sudah tersedia secara lokal di repository. Backend akan memuat model secara otomatis dari:
 
 ```text
-server/data/tfjs_model/model.json
+FullStack/server/data/tfjs_model/model.json
 ```
 
 Jika ingin mengganti model:
 
 1. Pastikan model baru sudah dikonversi ke format TensorFlow.js Graph Model.
-2. Ganti file `model.json` dan semua file bobot `.bin` di folder `server/data/tfjs_model/`.
-3. Jika input layer, ukuran gambar, atau jumlah kelas berubah, sesuaikan logic di `server/controllers/classificationController.js`.
+2. Ganti file `model.json` dan semua file bobot `.bin` di folder `FullStack/server/data/tfjs_model/`.
+3. Jika input layer, ukuran gambar, atau jumlah kelas berubah, sesuaikan logic di `FullStack/server/controllers/classificationController.js`.
 4. Jika label kelas berubah, perbarui `CLASS_LABELS` dan `CLASS_DATA_MAP` di file yang sama.
 
 ## Cara Menjalankan Aplikasi
 
 ### Menjalankan Frontend dan Backend Sekaligus
 
-Gunakan perintah berikut dari root project:
+Gunakan perintah berikut dari folder `FullStack`:
 
 ```bash
 npm run dev:all
@@ -264,7 +275,7 @@ Menjalankan ESLint untuk memeriksa kualitas kode.
    - resize ke 224x224 piksel
    - konversi ke format RGB
    - normalisasi nilai piksel ke rentang 0 sampai 1
-4. TensorFlow.js memuat model dari `server/data/tfjs_model/model.json`.
+4. TensorFlow.js memuat model dari `FullStack/server/data/tfjs_model/model.json`.
 5. Model menghasilkan prediksi kelas sampah.
 6. Backend mengembalikan hasil klasifikasi, tingkat confidence, deskripsi, panduan pembuangan, dan tips daur ulang.
 7. Hasil disimpan ke riwayat pemindaian.
@@ -272,6 +283,6 @@ Menjalankan ESLint untuk memeriksa kualitas kode.
 ## Catatan Troubleshooting
 
 - Jika chatbot gagal, pastikan `GEMINI_API_KEY` sudah benar di file `.env`.
-- Jika klasifikasi gagal saat server pertama kali dijalankan, cek apakah folder `server/data/tfjs_model/` berisi `model.json` dan semua file `.bin`.
+- Jika klasifikasi gagal saat server pertama kali dijalankan, cek apakah folder `FullStack/server/data/tfjs_model/` berisi `model.json` dan semua file `.bin`.
 - Jika frontend tidak dapat mengakses API, pastikan backend berjalan di port `5000`.
 - Jika port `5173` atau `5000` sudah digunakan, hentikan proses yang memakai port tersebut atau ubah konfigurasi port.
