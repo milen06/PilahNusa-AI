@@ -118,6 +118,66 @@ export const checkFeedbackStatusFromSupabase = async (userId) => {
 };
 
 /**
+ * Delete a single scan history item from Supabase by ID
+ * @param {string} itemId - The history item ID to delete
+ * @param {string} userId - The unique user ID
+ * @returns {Promise<{success: boolean, error: any}>}
+ */
+export const deleteHistoryItemFromSupabase = async (itemId, userId) => {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('scan_history')
+      .delete()
+      .eq('id', itemId)
+      .eq('user_id', userId);
+
+    if (error) {
+      console.error('[Supabase] Error deleting scan item:', error);
+      return { success: false, error };
+    }
+
+    console.log('[Supabase] Successfully deleted scan item:', itemId);
+    return { success: true };
+  } catch (err) {
+    console.error('[Supabase] Exception deleting scan item:', err);
+    return { success: false, error: err };
+  }
+};
+
+/**
+ * Clear all scan history for a user from Supabase
+ * @param {string} userId - The unique user ID
+ * @returns {Promise<{success: boolean, error: any}>}
+ */
+export const clearHistoryFromSupabase = async (userId) => {
+  if (!isSupabaseConfigured || !supabase) {
+    return { success: false, error: 'Supabase is not configured' };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('scan_history')
+      .delete()
+      .eq('user_id', userId);
+
+    if (error) {
+      console.error('[Supabase] Error clearing history:', error);
+      return { success: false, error };
+    }
+
+    console.log('[Supabase] Successfully cleared all history for user:', userId);
+    return { success: true };
+  } catch (err) {
+    console.error('[Supabase] Exception clearing history:', err);
+    return { success: false, error: err };
+  }
+};
+
+/**
  * Fetch scan history for a specific user from Supabase (scan_history table)
  * @param {string} userId - The unique user ID
  * @returns {Promise<{success: boolean, data: Array, error: any}>}

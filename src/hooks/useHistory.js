@@ -4,6 +4,8 @@ import { getOrCreateUserId } from '../utils/userUtils';
 import { 
   fetchHistoryFromSupabase, 
   saveScanToSupabase, 
+  deleteHistoryItemFromSupabase,
+  clearHistoryFromSupabase,
   submitUserFeedbackToSupabase,
   checkFeedbackStatusFromSupabase
 } from '../services/supabaseClient';
@@ -121,6 +123,14 @@ const useHistory = () => {
   const removeFromHistory = useCallback((id) => {
     const updatedHistory = deleteHistoryItem(id);
     setHistory(updatedHistory);
+
+    // Sync deletion to Supabase in the background
+    const userId = getOrCreateUserId();
+    if (userId) {
+      deleteHistoryItemFromSupabase(id, userId).catch((err) => {
+        console.error('Failed to delete scan from Supabase:', err);
+      });
+    }
   }, []);
 
   /**
@@ -129,6 +139,14 @@ const useHistory = () => {
   const clearAllHistory = useCallback(() => {
     clearHistory();
     setHistory([]);
+
+    // Sync clearing to Supabase in the background
+    const userId = getOrCreateUserId();
+    if (userId) {
+      clearHistoryFromSupabase(userId).catch((err) => {
+        console.error('Failed to clear history from Supabase:', err);
+      });
+    }
   }, []);
 
   /**
