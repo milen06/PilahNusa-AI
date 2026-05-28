@@ -42,6 +42,7 @@ Analisis dataset oleh tim Data Scientist tersedia melalui Streamlit:
 
 ```text
 PilahNusa-AI/
+├── machine_learning/           # Script pelatihan dan konversi model AI
 ├── public/                     # Aset statis
 ├── server/                     # Aplikasi backend Express
 │   ├── controllers/            # Logic API, klasifikasi ML, dan chatbot
@@ -57,6 +58,7 @@ PilahNusa-AI/
 │   ├── pages/                  # Halaman aplikasi
 │   ├── services/               # Integrasi API frontend
 │   └── utils/                  # Helper function
+├── tests/e2e/                  # Skenario pengujian End-to-End (Playwright)
 ├── .env.example                # Contoh konfigurasi environment
 ├── package.json                # Dependensi dan script npm
 └── vite.config.js              # Konfigurasi Vite dan proxy API
